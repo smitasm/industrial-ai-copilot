@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+.env
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Chroma Vector DB
+vector_store/
+vectorstore/
+
+# Logs
+*.log
+
+# Python Cache
+.pytest_cache/
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets
+.env.local
+.env.*
+
+# IDE
+.idea/
