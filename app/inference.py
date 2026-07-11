@@ -5,6 +5,7 @@ from rag.vector_store import load_vector_store
 from rag.retriever import get_retriever
 from rag.llm import get_llm
 from rag.debugger import print_debug_info
+from agents.planner_agent import PlannerAgent
 
 
 def main():
@@ -26,9 +27,13 @@ def main():
     llm = get_llm()
 
     # Create Retrieval Agent (only once)
-    agent = RetrievalAgent(
+    retrieval_agent = RetrievalAgent(
         retriever=retriever,
         llm=llm
+    )
+
+    planner = PlannerAgent(
+        retrieval_agent = retrieval_agent
     )
 
     print("\n✅ AI Copilot Ready!")
@@ -42,11 +47,7 @@ def main():
             print("\nGoodbye!")
             break
 
-        result = agent.run(
-            question=question,
-            debug=True
-        )
-
+        result = planner.run(question)
         print_debug_info(result)
 
 
