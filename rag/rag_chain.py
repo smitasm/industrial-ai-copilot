@@ -3,7 +3,8 @@ from rag.prompt import RAG_PROMPT
 def ask_question(
         question,
         retriever,
-        llm
+        llm,
+        debug=False
 ):
     docs=retriever.invoke(question)
 
@@ -15,4 +16,12 @@ def ask_question(
     })
 
     response = llm.invoke(prompt)
+    if debug:
+        return {
+            "answer" : response.content,
+            "context" : context,
+            "docs" : docs,
+            "prompt" : prompt
+        }
+
     return response.content

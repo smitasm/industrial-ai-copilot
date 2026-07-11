@@ -1,9 +1,11 @@
+from pydoc import doc
+
 from rag.embeddings import get_embedding_model
 from rag.vector_store import load_vector_store
 from rag.retriever import get_retriever
 from rag.llm import get_llm
 from rag.rag_chain import ask_question
-
+from rag.debugger import print_debug_info
 
 def main():
 
@@ -35,15 +37,15 @@ def main():
             print("\nGoodbye!")
             break
 
-        answer = ask_question(
+        result = ask_question(
             question,
             retriever,
             llm,
+            debug=True
         )
+        print_debug_info(result)
 
-        print("\nAssistant:")
-        print(answer)
-        print("-" * 80)
+        
 
 
 if __name__ == "__main__":
