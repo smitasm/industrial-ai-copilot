@@ -1,11 +1,11 @@
-from pydoc import doc
+from agents.retrieval_agent import RetrievalAgent
 
 from rag.embeddings import get_embedding_model
 from rag.vector_store import load_vector_store
 from rag.retriever import get_retriever
 from rag.llm import get_llm
-from rag.rag_chain import ask_question
 from rag.debugger import print_debug_info
+
 
 def main():
 
@@ -25,6 +25,12 @@ def main():
     print("Loading LLM...")
     llm = get_llm()
 
+    # Create Retrieval Agent (only once)
+    agent = RetrievalAgent(
+        retriever=retriever,
+        llm=llm
+    )
+
     print("\n✅ AI Copilot Ready!")
     print("Type 'exit' to quit.\n")
 
@@ -33,19 +39,15 @@ def main():
         question = input("You: ")
 
         if question.lower() in ["exit", "quit"]:
-
             print("\nGoodbye!")
             break
 
-        result = ask_question(
-            question,
-            retriever,
-            llm,
+        result = agent.run(
+            question=question,
             debug=True
         )
-        print_debug_info(result)
 
-        
+        print_debug_info(result)
 
 
 if __name__ == "__main__":
