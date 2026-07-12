@@ -3,12 +3,30 @@ from pathlib import Path
 
 def print_debug_info(result):
 
+    debug = result["debug"]
+
     print("\n" + "=" * 80)
     print("RETRIEVAL DEBUGGER")
     print("=" * 80)
 
-    debug = result["debug"]
-    for i, doc in enumerate(debug["docs"], start=1):
+    # -------------------------------------------------------
+    # Question
+    # -------------------------------------------------------
+
+    print("\nQUESTION")
+    print("-" * 80)
+    print(debug.get("question", "Not Available"))
+
+    # -------------------------------------------------------
+    # Retrieved Documents
+    # -------------------------------------------------------
+
+    print(f"\nRetrieved Chunks : {len(debug['docs_with_scores'])}")
+
+    for i, (doc, score) in enumerate(
+            debug["docs_with_scores"],
+            start=1
+    ):
 
         metadata = doc.metadata
 
@@ -24,17 +42,59 @@ def print_debug_info(result):
         print(f"\nChunk {i}")
         print("-" * 80)
 
-        print(f"Document : {source}")
-        print(f"Page     : {page}")
+        print(f"{'Document':<12}: {source}")
+        print(f"{'Page':<12}: {page}")
+        print(f"{'Score':<12}: {score:.4f}")
 
-        print("\nChunk:\n")
-        print(doc.page_content)
+        print("\nChunk Preview:\n")
+
+        preview = doc.page_content[:400]
+
+        print(preview)
+
+        if len(doc.page_content) > 400:
+            print("...")
 
         print("-" * 80)
 
+    # -------------------------------------------------------
+    # Prompt
+    # -------------------------------------------------------
+
     print("\n" + "=" * 80)
-    print("ANSWER")
+    print("PROMPT SENT TO LLM")
     print("=" * 80)
 
-    print(result["answer"])
-    print("-" * 80)
+    prompt = debug["prompt"]
+
+    for message in prompt.messages:
+        print(message.content)
+
+    # -------------------------------------------------------
+    # Performance
+    # -------------------------------------------------------
+
+    metrics = debug["metrics"]
+
+    print("\n" + "=" * 80)
+    print("PERFORMANCE METRICS")
+    print("=" * 80)
+
+    print(
+        f"{'Retrieval Time':<18}: "
+        f"{metrics['retrieval_time']:.4f} sec"
+    )
+
+    print(
+        f"{'LLM Time':<18}: "
+        f"{metrics['llm_time']:.4f} sec"
+    )
+
+    print(
+        f"{'Total Time':<18}: "
+        f"{metrics['total_time']:.4f} sec"
+    )
+
+    print("\n" + "=" * 80)
+    print("END DEBUG")
+    print("=" * 80)

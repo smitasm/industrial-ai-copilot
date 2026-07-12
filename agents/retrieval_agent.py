@@ -5,7 +5,7 @@ class RetrievalAgent:
         self.retriever = retriever
         self.llm = llm
 
-    def run(self, question, debug=False):
+    def run(self, question, debug=True):
         result = ask_question(
             question= question,
             retriever= self.retriever,
