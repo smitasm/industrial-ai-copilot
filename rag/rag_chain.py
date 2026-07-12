@@ -18,10 +18,17 @@ def ask_question(
     response = llm.invoke(prompt)
     if debug:
         return {
+            "agent" : "Retrival agent",
             "answer" : response.content,
+            "debug" :{
             "context" : context,
             "docs" : docs,
             "prompt" : prompt
+            }
         }
 
-    return response.content
+    return {
+        "agent" : "Retrieval agent",
+        "answer" : response.context,
+        "debug" : None
+    }

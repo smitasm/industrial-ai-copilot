@@ -7,7 +7,8 @@ def print_debug_info(result):
     print("RETRIEVAL DEBUGGER")
     print("=" * 80)
 
-    for i, doc in enumerate(result["docs"], start=1):
+    debug = result["debug"]
+    for i, doc in enumerate(debug["docs"], start=1):
 
         metadata = doc.metadata
 
